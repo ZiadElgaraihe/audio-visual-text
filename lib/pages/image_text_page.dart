@@ -17,6 +17,7 @@ class ImageTextPage extends StatefulWidget {
 
 class _ImageTextPageState extends State<ImageTextPage> {
   ValueNotifier<File?> imageFile = ValueNotifier<File?>(null);
+  TextToSpeech tts = TextToSpeech();
 
   Future<void> getImage(ImageSource imageSource) async {
     try {
@@ -39,7 +40,6 @@ class _ImageTextPageState extends State<ImageTextPage> {
       final RecognizedText recognizedText =
           await textRecognizer.processImage(inputImage);
       await textRecognizer.close();
-      TextToSpeech tts = TextToSpeech();
       await tts.setLanguage('en-US');
       await tts.speak(recognizedText.text.split('\n').join(' '));
       debugPrint(recognizedText.text.split('\n').join(' '));
@@ -85,9 +85,7 @@ class _ImageTextPageState extends State<ImageTextPage> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 25,
-            ),
+            SizedBox(height: MediaQuery.of(context).size.height / 25),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -119,7 +117,13 @@ class _ImageTextPageState extends State<ImageTextPage> {
                   },
                 )
               ],
-            )
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height / 25),
+            CustomElevatedButton(
+                icon: Icons.volume_off_rounded,
+                onPressed: () async {
+                  await tts.stop();
+                })
           ],
         ),
       ),

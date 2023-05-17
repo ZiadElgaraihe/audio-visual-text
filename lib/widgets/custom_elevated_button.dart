@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 class CustomElevatedButton extends StatelessWidget {
   const CustomElevatedButton({
     super.key,
-    required this.title,
+    this.title,
     required this.icon,
     required this.onPressed,
   });
 
-  final String title;
+  final String? title;
   final IconData icon;
   final Function onPressed;
 
@@ -35,10 +35,12 @@ class CustomElevatedButton extends StatelessWidget {
         child: Column(
           children: [
             Icon(icon, color: beautifulGreen),
-            Text(
-              title,
-              style: const TextStyle(color: beautifulGreen),
-            )
+            (title != null)
+                ? Text(
+                    title!,
+                    style: const TextStyle(color: beautifulGreen),
+                  )
+                : const SizedBox(),
           ],
         ));
   }
